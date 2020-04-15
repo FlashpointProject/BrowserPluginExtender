@@ -23,7 +23,7 @@
     <ProjectGuid>{320D85F1-CFA8-4AFD-A208-24951B1C2E15}</ProjectGuid>
     <RootNamespace>Extender</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
-    <ProjectName>ShockwaveExtender</ProjectName>
+    <ProjectName>BrowserPluginExtender</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -145,10 +145,7 @@
     <None Include="Extender.def" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\README.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="ShockwaveExtender.rc" />
+    <ResourceCompile Include="BrowserPluginExtender.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
