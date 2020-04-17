@@ -5,6 +5,8 @@ c:\program files (x86)\microsoft sdks\windows\v7.1a\include\dbghelp.h(3056): war
 c:\users\anthony\documents\visual studio 2017\projects\browserpluginextender\extender\main.h(29): warning C4133: '-': incompatible types - from 'const void *' to 'char *'
      Creating library C:\Users\Anthony\Documents\Visual Studio 2017\Projects\BrowserPluginExtender\Release\BrowserPluginExtender.lib and object C:\Users\Anthony\Documents\Visual Studio 2017\Projects\BrowserPluginExtender\Release\BrowserPluginExtender.exp
   Generating code
-  All 12 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  1 of 99 functions ( 1.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Extender.vcxproj -> C:\Users\Anthony\Documents\Visual Studio 2017\Projects\BrowserPluginExtender\Release\BrowserPluginExtender.dll
