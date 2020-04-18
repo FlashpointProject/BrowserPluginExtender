@@ -6,9 +6,9 @@
 const size_t MAX_PATH_WIDE = MAX_PATH * 2;
 const wchar_t* BROWSER_PLUGINS = L"\\..\\..\\..\\BrowserPlugins\\";
 const wchar_t* SHOCKWAVE = L"Shockwave";
-const wchar_t* CLICKTEAM = L"Clickteam";
+const wchar_t* VITALIZE  = L"Vitalize";
 wchar_t sysdirShockwave[MAX_PATH_WIDE];
-wchar_t sysdirClickteam[MAX_PATH_WIDE];
+wchar_t sysdirVitalize[MAX_PATH_WIDE];
 
 __declspec(naked) void getSystemDirectoryWExtendedCodeShockwave() {
 	__asm {
@@ -26,11 +26,11 @@ __declspec(naked) void getSystemDirectoryWExtendedCodeShockwave() {
 	}
 }
 
-__declspec(naked) void getSystemDirectoryWExtendedCodeClickteam() {
+__declspec(naked) void getSystemDirectoryWExtendedCodeVitalize() {
 	__asm {
 		push eax;
 		push[esp + 0x0000000C];
-		lea eax, [sysdirClickteam];
+		lea eax, [sysdirVitalize];
 		push eax;
 		push[esp + 0x00000010];
 		call wcsncpy;
@@ -154,70 +154,70 @@ bool extender() {
 		}
 	}
 
-	HMODULE clickteamModuleHandle = GetModuleHandle("NpCnc32.dll");
+	HMODULE vitalizeModuleHandle = GetModuleHandle("NpCnc32.dll");
 
-	if (clickteamModuleHandle) {
-		if (wcsncpy_s(sysdirClickteam, CA2W(sysdir), MAX_PATH_WIDE)) {
-			MessageBox(NULL, "Failed to Copy sysdirClickteam String", errorCaption, MB_OK | MB_ICONERROR);
+	if (vitalizeModuleHandle) {
+		if (wcsncpy_s(sysdirVitalize, CA2W(sysdir), MAX_PATH_WIDE)) {
+			MessageBox(NULL, "Failed to Copy sysdirVitalize String", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (wcsncat_s(sysdirClickteam, BROWSER_PLUGINS, MAX_PATH_WIDE)) {
-			MessageBox(NULL, "Failed to Concatenate sysdirClickteam String", errorCaption, MB_OK | MB_ICONERROR);
+		if (wcsncat_s(sysdirVitalize, BROWSER_PLUGINS, MAX_PATH_WIDE)) {
+			MessageBox(NULL, "Failed to Concatenate sysdirVitalize String", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (wcsncat_s(sysdirClickteam, CLICKTEAM, MAX_PATH_WIDE)) {
-			MessageBox(NULL, "Failed to Concatenate sysdirClickteam String after Concatenating sysdirClickteam String", errorCaption, MB_OK | MB_ICONERROR);
+		if (wcsncat_s(sysdirVitalize, VITALIZE, MAX_PATH_WIDE)) {
+			MessageBox(NULL, "Failed to Concatenate sysdirVitalize String after Concatenating sysdirVitalize String", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (!GetFullPathNameW(sysdirClickteam, MAX_PATH_WIDE - 2, sysdirFullPathName, NULL)) {
-			MessageBox(NULL, "Failed to Get sysdirClickteam Full Path Name", errorCaption, MB_OK | MB_ICONERROR);
+		if (!GetFullPathNameW(sysdirVitalize, MAX_PATH_WIDE - 2, sysdirFullPathName, NULL)) {
+			MessageBox(NULL, "Failed to Get sysdirVitalize Full Path Name", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (wcsncpy_s(sysdirClickteam, sysdirFullPathName, MAX_PATH_WIDE)) {
-			MessageBox(NULL, "Failed to Copy sysdirClickteam String after Getting sysdirClickteam Full Path Name", errorCaption, MB_OK | MB_ICONERROR);
+		if (wcsncpy_s(sysdirVitalize, sysdirFullPathName, MAX_PATH_WIDE)) {
+			MessageBox(NULL, "Failed to Copy sysdirVitalize String after Getting sysdirVitalize Full Path Name", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
 		// test it
-		const size_t CLICKTEAM_TEST_CODE_SIZE = 10;
-		unsigned char clickteamTestCode[CLICKTEAM_TEST_CODE_SIZE] = { 0x83, 0xEC, 0x34, 0x53, 0x55, 0x56, 0x57, 0x50, 0xFF, 0x15 };
+		const size_t VITALIZE_TEST_CODE_SIZE = 10;
+		unsigned char vitalizeTestCode[VITALIZE_TEST_CODE_SIZE] = { 0x83, 0xEC, 0x34, 0x53, 0x55, 0x56, 0x57, 0x50, 0xFF, 0x15 };
 
-		if (!testCode(errorCaption, clickteamModuleHandle, 0x00030225, CLICKTEAM_TEST_CODE_SIZE, clickteamTestCode)) {
+		if (!testCode(errorCaption, vitalizeModuleHandle, 0x00030225, VITALIZE_TEST_CODE_SIZE, vitalizeTestCode)) {
 			MessageBox(NULL, "Failed to Test Code", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
 		// extend it
-		if (!extendCode(errorCaption, clickteamModuleHandle, 0x00030416, getSystemDirectoryWExtendedCodeClickteam, true)) {
+		if (!extendCode(errorCaption, vitalizeModuleHandle, 0x00030416, getSystemDirectoryWExtendedCodeVitalize, true)) {
 			MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (!extendCode(errorCaption, clickteamModuleHandle, 0x0003041B)) {
+		if (!extendCode(errorCaption, vitalizeModuleHandle, 0x0003041B)) {
 			MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (!extendCode(errorCaption, clickteamModuleHandle, 0x00050657, getSystemDirectoryWExtendedCodeClickteam, true)) {
+		if (!extendCode(errorCaption, vitalizeModuleHandle, 0x00050657, getSystemDirectoryWExtendedCodeVitalize, true)) {
 			MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (!extendCode(errorCaption, clickteamModuleHandle, 0x0005065C)) {
+		if (!extendCode(errorCaption, vitalizeModuleHandle, 0x0005065C)) {
 			MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (!extendCode(errorCaption, clickteamModuleHandle, 0x00053F13, getSystemDirectoryWExtendedCodeClickteam, true)) {
+		if (!extendCode(errorCaption, vitalizeModuleHandle, 0x00053F13, getSystemDirectoryWExtendedCodeVitalize, true)) {
 			MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (!extendCode(errorCaption, clickteamModuleHandle, 0x00053F18)) {
+		if (!extendCode(errorCaption, vitalizeModuleHandle, 0x00053F18)) {
 			MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
