@@ -6,12 +6,14 @@
 const size_t MAX_PATH_WIDE = MAX_PATH * 2;
 const char* BROWSER_PLUGINS_BASILISK_PORTABLE = "\\..\\..\\..\\BrowserPlugins\\";
 const char* BROWSER_PLUGINS_FLASHPOINT_SECURE_PLAYER = "\\BrowserPlugins\\";
+const char* ACTIVEX_FLASHPOINT_SECURE_PLAYER = "\\ActiveX\\";
 const wchar_t* SHOCKWAVE = L"Shockwave";
 const wchar_t* VITALIZE = L"Vitalize";
 const char* PULSE = "Pulse";
 wchar_t sysdirShockwave[MAX_PATH_WIDE];
 wchar_t sysdirVitalize[MAX_PATH_WIDE];
 char sysdirPulse[MAX_PATH];
+char programFilesPulse[MAX_PATH];
 
 __declspec(naked) void getSystemDirectoryWExtendedCodeShockwave() {
 	__asm {
@@ -61,18 +63,34 @@ __declspec(naked) void getSystemDirectoryAExtendedCodePulse() {
 	}
 }
 
+__declspec(naked) void shGetFolderPathAExtendedCodePulse() {
+	__asm {
+		push eax;
+		push MAX_PATH;
+		lea eax, [programFilesPulse];
+		push eax;
+		push[esp + 0x00000010];
+		call strncpy;
+		pop eax;
+		pop eax;
+		pop eax;
+		pop eax;
+		retn 0x00000004;
+	}
+}
+
 bool extender() {
 	// set this to your Error Caption
 	LPCTSTR errorCaption = "Browser Plugin Extender Error";
-	char sysdir[MAX_PATH];
+	char root[MAX_PATH];
 
-	if (!GetModuleFileName(NULL, sysdir, MAX_PATH)) {
+	if (!GetModuleFileName(NULL, root, MAX_PATH)) {
 		MessageBox(NULL, "Failed to Get Module Filename", errorCaption, MB_OK | MB_ICONERROR);
 		return false;
 	}
 	
-	while (!PathIsDirectory(sysdir)) {
-		if (!PathRemoveFileSpec(sysdir)) {
+	while (!PathIsDirectory(root)) {
+		if (!PathRemoveFileSpec(root)) {
 			MessageBox(NULL, "Failed to Remove Path File Spec", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
@@ -80,12 +98,13 @@ bool extender() {
 
 	char sysdirFullPathNameA[MAX_PATH];
 	wchar_t sysdirFullPathNameW[MAX_PATH_WIDE];
+	char programFilesFullPathNameA[MAX_PATH];
 
 	// get Module Handle
 	HMODULE shockwaveModuleHandle = GetModuleHandle("np32dsw.dll");
 
 	if (shockwaveModuleHandle) {
-		if (wcsncpy_s(sysdirShockwave, CA2W(sysdir), MAX_PATH_WIDE)) {
+		if (wcsncpy_s(sysdirShockwave, CA2W(root), MAX_PATH_WIDE)) {
 			MessageBox(NULL, "Failed to Copy sysdirShockwave String", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
@@ -177,7 +196,7 @@ bool extender() {
 	HMODULE vitalizeModuleHandle = GetModuleHandle("NpCnc32.dll");
 
 	if (vitalizeModuleHandle) {
-		if (wcsncpy_s(sysdirVitalize, CA2W(sysdir), MAX_PATH_WIDE)) {
+		if (wcsncpy_s(sysdirVitalize, CA2W(root), MAX_PATH_WIDE)) {
 			MessageBox(NULL, "Failed to Copy sysdirVitalize String", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
@@ -247,7 +266,7 @@ bool extender() {
 	HMODULE pulse5ModuleHandle = GetModuleHandle("AxPulse5.dll");
 
 	if (pulseModuleHandle || pulse5ModuleHandle) {
-		if (strncpy_s(sysdirPulse, sysdir, MAX_PATH)) {
+		if (strncpy_s(sysdirPulse, root, MAX_PATH)) {
 			MessageBox(NULL, "Failed to Copy sysdirPulse String", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
@@ -295,6 +314,33 @@ bool extender() {
 		}
 
 		if (pulse5ModuleHandle) {
+			if (strncpy_s(programFilesPulse, root, MAX_PATH)) {
+				MessageBox(NULL, "Failed to Copy programFilesPulse String", errorCaption, MB_OK | MB_ICONERROR);
+				return false;
+			}
+
+			if (strncat_s(programFilesPulse, ACTIVEX_FLASHPOINT_SECURE_PLAYER, MAX_PATH)) {
+				MessageBox(NULL, "Failed to Concatenate programFilesPulse String", errorCaption, MB_OK | MB_ICONERROR);
+				return false;
+			}
+
+			/*
+			if (strncat_s(programFilesPulse, PULSE, MAX_PATH)) {
+				MessageBox(NULL, "Failed to Concatenate programFilesPulse String after Concatenating programFilesPulse String", errorCaption, MB_OK | MB_ICONERROR);
+				return false;
+			}
+			*/
+
+			if (!GetFullPathNameA(programFilesPulse, MAX_PATH - 1, programFilesFullPathNameA, NULL)) {
+				MessageBox(NULL, "Failed to Get programFilesPulse Full Path Name", errorCaption, MB_OK | MB_ICONERROR);
+				return false;
+			}
+
+			if (strncpy_s(programFilesPulse, programFilesFullPathNameA, MAX_PATH)) {
+				MessageBox(NULL, "Failed to Copy programFilesPulse String after Getting programFilesPulse Full Path Name", errorCaption, MB_OK | MB_ICONERROR);
+				return false;
+			}
+
 			if (!testCode(errorCaption, pulse5ModuleHandle, 0x0001F59C, PULSE_TEST_CODE_SIZE, pulseTestCode)) {
 				MessageBox(NULL, "Failed to Test Code", errorCaption, MB_OK | MB_ICONERROR);
 				return false;
@@ -309,6 +355,18 @@ bool extender() {
 			if (!extendCode(errorCaption, pulse5ModuleHandle, 0x0000F703)) {
 				MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 				return false;
+			}
+
+			if (!extendCode(errorCaption, pulse5ModuleHandle, 0x0000F7CF, shGetFolderPathAExtendedCodePulse, true)) {
+				MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
+				return false;
+			}
+
+			for (DWORD i = 0; i < 8; i++) {
+				if (!extendCode(errorCaption, pulse5ModuleHandle, 0x0000F7D4 + i)) {
+					MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
+					return false;
+				}
 			}
 		}
 	}
