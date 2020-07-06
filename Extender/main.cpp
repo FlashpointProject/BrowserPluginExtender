@@ -47,7 +47,7 @@ __declspec(naked) void getSystemDirectoryWExtendedCodeVitalize() {
 	}
 }
 
-__declspec(naked) void getSystemDirectoryAExtendedCodePulse() {
+__declspec(naked) void getWindowsDirectoryAExtendedCodePulse() {
 	__asm {
 		push eax;
 		push[esp + 0x0000000C];
@@ -302,7 +302,7 @@ bool extender() {
 			}
 
 			// extend it
-			if (!extendCode(errorCaption, pulseModuleHandle, 0x00003D6A, getSystemDirectoryAExtendedCodePulse, true)) {
+			if (!extendCode(errorCaption, pulseModuleHandle, 0x00003D6A, getWindowsDirectoryAExtendedCodePulse, true)) {
 				MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 				return false;
 			}
@@ -341,29 +341,29 @@ bool extender() {
 				return false;
 			}
 
-			if (!testCode(errorCaption, pulse5ModuleHandle, 0x0001F59C, PULSE_TEST_CODE_SIZE, pulseTestCode)) {
+			if (!testCode(errorCaption, pulse5ModuleHandle, 0x000124F8, PULSE_TEST_CODE_SIZE, pulseTestCode)) {
 				MessageBox(NULL, "Failed to Test Code", errorCaption, MB_OK | MB_ICONERROR);
 				return false;
 			}
 
 			// extend it
-			if (!extendCode(errorCaption, pulse5ModuleHandle, 0x0000F6FE, getSystemDirectoryAExtendedCodePulse, true)) {
+			if (!extendCode(errorCaption, pulse5ModuleHandle, 0x0000A5A5, getWindowsDirectoryAExtendedCodePulse, true)) {
 				MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 				return false;
 			}
 
-			if (!extendCode(errorCaption, pulse5ModuleHandle, 0x0000F703)) {
+			if (!extendCode(errorCaption, pulse5ModuleHandle, 0x0000A5AA)) {
 				MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 				return false;
 			}
 
-			if (!extendCode(errorCaption, pulse5ModuleHandle, 0x0000F7CF, shGetFolderPathAExtendedCodePulse, true)) {
+			if (!extendCode(errorCaption, pulse5ModuleHandle, 0x0000A67A, shGetFolderPathAExtendedCodePulse, true)) {
 				MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 				return false;
 			}
 
-			for (DWORD i = 0; i < 8; i++) {
-				if (!extendCode(errorCaption, pulse5ModuleHandle, 0x0000F7D4 + i)) {
+			for (DWORD i = 0; i < 5; i++) {
+				if (!extendCode(errorCaption, pulse5ModuleHandle, 0x0000A67F + i)) {
 					MessageBox(NULL, "Failed to Extend Code", errorCaption, MB_OK | MB_ICONERROR);
 					return false;
 				}
