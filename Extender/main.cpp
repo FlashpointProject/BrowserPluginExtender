@@ -12,7 +12,7 @@ const wchar_t* VITALIZE = L"Vitalize";
 const char* PULSE = "Pulse";
 wchar_t sysdirShockwave[MAX_PATH_WIDE];
 wchar_t sysdirVitalize[MAX_PATH_WIDE];
-char sysdirPulse[MAX_PATH];
+char windirPulse[MAX_PATH];
 char programFilesPulse[MAX_PATH];
 
 __declspec(naked) void getSystemDirectoryWExtendedCodeShockwave() {
@@ -51,7 +51,7 @@ __declspec(naked) void getWindowsDirectoryAExtendedCodePulse() {
 	__asm {
 		push eax;
 		push[esp + 0x0000000C];
-		lea eax, [sysdirPulse];
+		lea eax, [windirPulse];
 		push eax;
 		push[esp + 0x00000010];
 		call strncpy;
@@ -266,28 +266,28 @@ bool extender() {
 	HMODULE pulse5ModuleHandle = GetModuleHandle("AxPulse5.dll");
 
 	if (pulseModuleHandle || pulse5ModuleHandle) {
-		if (strncpy_s(sysdirPulse, root, MAX_PATH)) {
-			MessageBox(NULL, "Failed to Copy sysdirPulse String", errorCaption, MB_OK | MB_ICONERROR);
+		if (strncpy_s(windirPulse, root, MAX_PATH)) {
+			MessageBox(NULL, "Failed to Copy windirPulse String", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (strncat_s(sysdirPulse, BROWSER_PLUGINS_FLASHPOINT_SECURE_PLAYER, MAX_PATH)) {
-			MessageBox(NULL, "Failed to Concatenate sysdirPulse String", errorCaption, MB_OK | MB_ICONERROR);
+		if (strncat_s(windirPulse, BROWSER_PLUGINS_FLASHPOINT_SECURE_PLAYER, MAX_PATH)) {
+			MessageBox(NULL, "Failed to Concatenate windirPulse String", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (strncat_s(sysdirPulse, PULSE, MAX_PATH)) {
-			MessageBox(NULL, "Failed to Concatenate sysdirPulse String after Concatenating sysdirPulse String", errorCaption, MB_OK | MB_ICONERROR);
+		if (strncat_s(windirPulse, PULSE, MAX_PATH)) {
+			MessageBox(NULL, "Failed to Concatenate windirPulse String after Concatenating windirPulse String", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (!GetFullPathNameA(sysdirPulse, MAX_PATH - 1, sysdirFullPathNameA, NULL)) {
-			MessageBox(NULL, "Failed to Get sysdirPulse Full Path Name", errorCaption, MB_OK | MB_ICONERROR);
+		if (!GetFullPathNameA(windirPulse, MAX_PATH - 1, sysdirFullPathNameA, NULL)) {
+			MessageBox(NULL, "Failed to Get windirPulse Full Path Name", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
-		if (strncpy_s(sysdirPulse, sysdirFullPathNameA, MAX_PATH)) {
-			MessageBox(NULL, "Failed to Copy sysdirPulse String after Getting sysdirPulse Full Path Name", errorCaption, MB_OK | MB_ICONERROR);
+		if (strncpy_s(windirPulse, sysdirFullPathNameA, MAX_PATH)) {
+			MessageBox(NULL, "Failed to Copy windirPulse String after Getting windirPulse Full Path Name", errorCaption, MB_OK | MB_ICONERROR);
 			return false;
 		}
 
