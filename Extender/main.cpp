@@ -83,8 +83,8 @@ __declspec(naked) void shGetFolderPathAExtendedCodePulse() {
 bool extender() {
 	CHAR root[MAX_PATH] = "";
 
-	if (!GetModuleFileName(NULL, root, MAX_PATH)) {
-		showLastError("Failed to Get Module Filename");
+	if (!GetModuleFileName(NULL, root, MAX_PATH - 1)) {
+		showLastError("Failed to Get Module File Name");
 		return false;
 	}
 	
