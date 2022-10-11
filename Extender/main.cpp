@@ -4,7 +4,7 @@
 #include <atlbase.h>
 #include <Shlwapi.h>
 
-const size_t MAX_PATH_WIDE = MAX_PATH * 2;
+const size_t MAX_PATH_WIDE = MAX_PATH + MAX_PATH;
 const char* BROWSER_PLUGINS_BASILISK_PORTABLE = "\\..\\..\\..\\BrowserPlugins\\";
 const char* BROWSER_PLUGINS_FLASHPOINT_SECURE_PLAYER = "\\BrowserPlugins\\";
 const char* ACTIVEX_FLASHPOINT_SECURE_PLAYER = "\\ActiveX\\";

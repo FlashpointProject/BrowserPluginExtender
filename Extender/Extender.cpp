@@ -116,7 +116,7 @@ bool testCode(HMODULE moduleHandle, RELATIVE_VIRTUAL_ADDRESS codeRelativeVirtual
 	void* codePointer = (void*)codeVirtualAddress;
 
 	if (!codePointer) {
-		showLastError("codePointer must not be 0");
+		showLastError("codePointer must not be zero");
 		return false;
 	}
 
@@ -138,7 +138,7 @@ bool extendCode(HMODULE moduleHandle, RELATIVE_VIRTUAL_ADDRESS codeRelativeVirtu
 	}
 
 	if (!extendedCode) {
-		showLastError("extendedCode must not be 0");
+		showLastError("extendedCode must not be zero");
 		return false;
 	}
 
@@ -148,6 +148,7 @@ bool extendCode(HMODULE moduleHandle, RELATIVE_VIRTUAL_ADDRESS codeRelativeVirtu
 	DWORD oldProtect = 0;
 
 	if (!unprotectCode(moduleHandle, codeVirtualAddress, CODE_VIRTUAL_SIZE, oldProtect)) {
+		showLastError("Failed to Unprotect Code");
 		return false;
 	}
 
