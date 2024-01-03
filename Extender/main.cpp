@@ -2,17 +2,17 @@
 #include "Extender.h"
 #include <windows.h>
 #include <atlbase.h>
+#include <atlconv.h>
 #include <Shlwapi.h>
 
-const size_t MAX_PATH_WIDE = MAX_PATH + MAX_PATH;
 const char* BROWSER_PLUGINS_BASILISK_PORTABLE = "\\..\\..\\..\\BrowserPlugins\\";
 const char* BROWSER_PLUGINS_FLASHPOINT_SECURE_PLAYER = "\\BrowserPlugins\\";
 const char* ACTIVEX_FLASHPOINT_SECURE_PLAYER = "\\ActiveX\\";
 const wchar_t* SHOCKWAVE = L"Shockwave";
 const wchar_t* VITALIZE = L"Vitalize";
 const char* PULSE = "Pulse";
-wchar_t sysdirShockwave[MAX_PATH_WIDE] = L"";
-wchar_t sysdirVitalize[MAX_PATH_WIDE] = L"";
+wchar_t sysdirShockwave[MAX_PATH] = L"";
+wchar_t sysdirVitalize[MAX_PATH] = L"";
 char windirPulse[MAX_PATH] = "";
 char programFilesPulse[MAX_PATH] = "";
 
@@ -96,34 +96,34 @@ bool extender() {
 	}
 
 	CHAR sysdirFullPathNameA[MAX_PATH] = "";
-	WCHAR sysdirFullPathNameW[MAX_PATH_WIDE] = L"";
+	WCHAR sysdirFullPathNameW[MAX_PATH] = L"";
 	CHAR programFilesFullPathNameA[MAX_PATH] = "";
 
 	// get Module Handle
 	HMODULE shockwaveModuleHandle = GetModuleHandle("NP32DSW.DLL");
 
 	if (shockwaveModuleHandle) {
-		if (wcsncpy_s(sysdirShockwave, CA2W(root), MAX_PATH_WIDE)) {
+		if (wcsncpy_s(sysdirShockwave, CA2W(root), MAX_PATH)) {
 			showLastError("Failed to Copy String");
 			return false;
 		}
 
-		if (wcsncat_s(sysdirShockwave, CA2W(BROWSER_PLUGINS_BASILISK_PORTABLE), MAX_PATH_WIDE)) {
+		if (wcsncat_s(sysdirShockwave, CA2W(BROWSER_PLUGINS_BASILISK_PORTABLE), MAX_PATH)) {
 			showLastError("Failed to Concatenate String");
 			return false;
 		}
 
-		if (wcsncat_s(sysdirShockwave, SHOCKWAVE, MAX_PATH_WIDE)) {
+		if (wcsncat_s(sysdirShockwave, SHOCKWAVE, MAX_PATH)) {
 			showLastError("Failed to Concatenate String");
 			return false;
 		}
 
-		if (!GetFullPathNameW(sysdirShockwave, MAX_PATH_WIDE - 2, sysdirFullPathNameW, NULL)) {
+		if (!GetFullPathNameW(sysdirShockwave, MAX_PATH - 1, sysdirFullPathNameW, NULL)) {
 			showLastError("Failed to Get Full Path Name");
 			return false;
 		}
 
-		if (wcsncpy_s(sysdirShockwave, sysdirFullPathNameW, MAX_PATH_WIDE)) {
+		if (wcsncpy_s(sysdirShockwave, sysdirFullPathNameW, MAX_PATH)) {
 			showLastError("Failed to Copy String");
 			return false;
 		}
@@ -195,27 +195,27 @@ bool extender() {
 	HMODULE vitalizeModuleHandle = GetModuleHandle("NPCNC32.DLL");
 
 	if (vitalizeModuleHandle) {
-		if (wcsncpy_s(sysdirVitalize, CA2W(root), MAX_PATH_WIDE)) {
+		if (wcsncpy_s(sysdirVitalize, CA2W(root), MAX_PATH)) {
 			showLastError("Failed to Copy String");
 			return false;
 		}
 
-		if (wcsncat_s(sysdirVitalize, CA2W(BROWSER_PLUGINS_BASILISK_PORTABLE), MAX_PATH_WIDE)) {
+		if (wcsncat_s(sysdirVitalize, CA2W(BROWSER_PLUGINS_BASILISK_PORTABLE), MAX_PATH)) {
 			showLastError("Failed to Concatenate String");
 			return false;
 		}
 
-		if (wcsncat_s(sysdirVitalize, VITALIZE, MAX_PATH_WIDE)) {
+		if (wcsncat_s(sysdirVitalize, VITALIZE, MAX_PATH)) {
 			showLastError("Failed to Concatenate String");
 			return false;
 		}
 
-		if (!GetFullPathNameW(sysdirVitalize, MAX_PATH_WIDE - 2, sysdirFullPathNameW, NULL)) {
+		if (!GetFullPathNameW(sysdirVitalize, MAX_PATH - 1, sysdirFullPathNameW, NULL)) {
 			showLastError("Failed to Get Full Path Name");
 			return false;
 		}
 
-		if (wcsncpy_s(sysdirVitalize, sysdirFullPathNameW, MAX_PATH_WIDE)) {
+		if (wcsncpy_s(sysdirVitalize, sysdirFullPathNameW, MAX_PATH)) {
 			showLastError("Failed to Copy String");
 			return false;
 		}

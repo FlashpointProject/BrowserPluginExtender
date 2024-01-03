@@ -11,27 +11,35 @@ typedef DWORD EXTENDED_CODE_ADDRESS;
 typedef BYTE CODE1;
 typedef WORD CODE2;
 
-inline size_t stringSize(const char* string) {
-	return strlen(string) + 1;
+inline bool stringNullOrEmpty(const char* str) {
+	return !str || !*str;
 }
 
-inline bool stringsEqual(const char* leftHandSide, const char* rightHandSide) {
-	return !strcmp(leftHandSide, rightHandSide);
+inline size_t stringSize(const char* str) {
+	return strlen(str) + 1;
 }
 
-inline bool memoryEqual(const void* buffer, const void* buffer2, size_t bufferSize) {
-	return !memcmp(buffer, buffer2, bufferSize);
+inline bool stringEquals(const char* str, const char* str2) {
+	return !strcmp(str, str2);
 }
 
-inline bool memoryShift(size_t bufferSize, void* buffer, size_t sourceSize, void* source, size_t shift, bool direction) {
+inline bool stringEqualsCaseInsensitive(const char* str, const char* str2) {
+	return !_stricmp(str, str2);
+}
+
+inline bool memoryEquals(const void* mem, const void* mem2, size_t size) {
+	return !memcmp(mem, mem2, size);
+}
+
+inline bool memoryShift(void *mem, size_t memSize, void *sourceMem, size_t sourceMemSize, size_t shift, bool direction) {
 	#pragma warning(push)
 	#pragma warning(disable : 4133)
-	if (source < buffer || (char*)source + sourceSize > (char*)buffer + bufferSize) {
+	if (sourceMem < mem || (char*)sourceMem + sourceMemSize > (char*)mem + memSize) {
 		return false;
 	}
 
-	size_t destinationSize = (char*)buffer + bufferSize - source;
-	char* destination = (char*)source;
+	size_t destinationSize = (char*)mem + memSize - sourceMem;
+	char* destination = (char*)sourceMem;
 
 	if (direction) {
 		destination += shift;
@@ -39,10 +47,10 @@ inline bool memoryShift(size_t bufferSize, void* buffer, size_t sourceSize, void
 		destination -= shift;
 	}
 
-	if (destination < buffer || destination + destinationSize > (char*)buffer + bufferSize) {
+	if (destination < mem || destination + destinationSize > (char*)mem + memSize) {
 		return false;
 	}
-	return !memmove_s(destination, destinationSize, source, sourceSize);
+	return !memmove_s(destination, destinationSize, sourceMem, sourceMemSize);
 	#pragma warning(pop)
 }
 
